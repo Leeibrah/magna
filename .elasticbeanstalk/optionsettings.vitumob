@@ -4,7 +4,7 @@ MaxSize=4
 MinSize=1
 
 [aws:autoscaling:launchconfiguration]
-EC2KeyName=
+EC2KeyName=private2.ppk
 InstanceType=t1.micro
 
 [aws:ec2:vpc]

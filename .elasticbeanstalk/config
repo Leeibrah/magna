@@ -8,5 +8,6 @@ InstanceProfileName=aws-elasticbeanstalk-ec2-role
 OptionSettingFile=c:\xampp\htdocs\vml4\.elasticbeanstalk\optionsettings.vitumob
 RdsEnabled=No
 Region=us-west-2
-ServiceEndpoint=https://elasticbeanstalk.us-east-1.amazonaws.com
+ServiceEndpoint=https://elasticbeanstalk.us-west-2.amazonaws.com
 SolutionStack=64bit Amazon Linux running PHP 5.4
+

@@ -25,11 +25,13 @@ $app->redirectIfTrailingSlash();
 | given environment, then we will automatically detect it for you.
 |
 */
+$elastic_hostname = isset($_SERVER['RDS_HOSTNAME']) ? $_SERVER['SERVER_NAME'] : 'none-existant-hostname';
 
 $env = $app->detectEnvironment(array(
 
 	'local' => array('*local*', '*.dev', 'TECHYTIMO-PC'),
-	'stage' => array('*.com')
+	'stage' => array('*.com'),
+	'elastic' => array($elastic_hostname)
 
 ));
 
