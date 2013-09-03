@@ -1,0 +1,17 @@
+<script>
+var parsers = {};
+window.addEventListener('message', function(event) {
+	if (event.data.verb === 'set') {
+		eval("parsers[event.data.host] = " + event.data.parser + ";");
+	} else if (event.data.verb === 'parse') {
+		try {
+			var bundle = parsers[event.data.host](event.data.html);
+			bundle['host'] = event.data.host;
+			event.source.postMessage({ 'verb': "post", 'bundle': bundle, 'tab': event.data.tab }, event.origin);
+		} catch(e) {
+			window.console.log("error parsing from " + event.data.host + ": " + e);
+			event.source.postMessage({ 'verb': "error", 'error': e.message }, event.origin);
+		}
+	}
+});
+</script>

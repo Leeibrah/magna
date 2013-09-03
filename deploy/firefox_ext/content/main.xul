@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+
+<?xml-stylesheet type="text/css" href="chrome://global/skin/" ?>
+<?xml-stylesheet type="text/css" href="chrome://vitumob/skin/toolbar.css" ?>
+
+<!DOCTYPE overlay>
+
+<overlay id="vitumob-browser-overlay" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+  <script type="application/x-javascript" src="chrome://vitumob/content/main.js" />
+
+  <toolbarpalette id="BrowserToolbarPalette">
+    <toolbarbutton type="panel" id="vitumob" label="VituMob" image="chrome://vitumob/skin/icon20.png" tooltiptext="VituMob">
+      <panel id="vitu-panel" xmlns:html="http://www.w3.org/1999/xhtml" onpopupshowing="vitu.check()"></panel>
+    </toolbarbutton>
+  </toolbarpalette>
+
+</overlay>

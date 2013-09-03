@@ -1,0 +1,30 @@
+{
+   "background": {
+      "scripts": [ "main.js" ]
+   },
+   "browser_action": {
+      "default_icon": "icon18.png",
+      "default_popup": "popup.html",
+      "default_title": "VituMob"
+   },
+   "content_scripts": [ {
+      "js": [ "home.js" ],
+      "matches": [ "http://www.vitumob.com/", "http://www.vitumob.com/beta" ],
+      "run_at": "document_end"
+   } ],
+   "icons": {
+      "128": "icon128.png",
+      "16": "icon16.png",
+      "18": "icon18.png",
+      "48": "icon48.png"
+   },
+   "key": "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCmvLPRIYoMbwlEOZdONW/kdFDEcqaUI6gUN1oCrFKkx3TAKT1pj6nF0da3FCFVQoB9veinb4j67hXNeyMAojUNcdQyqzVRIYVh1qx0NtqAJwd4yiW5Md8j1Z1UYnaN6NJ2Hl/j/viJ7PVBpt1t3DmUdMU26NMpTs37/M7QhLRDXQIDAQAB",
+   "manifest_version": 2,
+   "name": "VituMob",
+   "permissions": [ "tabs", "\u003Call_urls\u003E" ],
+   "sandbox": {
+      "pages": [ "parse.html" ]
+   },
+   "update_url": "https://clients2.google.com/service/update2/crx",
+   "version": "0.9"
+}

@@ -1,0 +1,330 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1033{\fonttbl{\f0\fnil\fcharset0 Calibri;}}
+{\*\generator Msftedit 5.41.21.2510;}\viewkind4\uc1\pard\sa200\sl276\slmult1\lang9\f0\fs22\{namespace vitumob.admin\}\par
+\par
+/**\par
+ * stylesheet\par
+ */\par
+\{template .stylesheet\}\par
+\{literal\}\par
+\par
+\tab table \{ border: thin solid black; cursor: default \}\par
+\par
+\tab tbody.odd \{ background-color: WhiteSmoke \}\par
+\par
+\tab tbody.even \{ background-color: Gainsboro \}\par
+\par
+\tab #orders tbody:hover \{ background-color: LightSlateGray \}\par
+\par
+\tab th, td \{ padding: 5pt \}\par
+\par
+\tab td.price \{ text-align: right \}\par
+\par
+    thead td[id]:hover span \{ text-decoration: underline \}\par
+\par
+    td.asc:after \{ content: ' \\2193' \}\par
+    td.desc:after \{ content: ' \\2191' \}\par
+\par
+\{/literal\}\par
+\{/template\}\par
+\par
+\par
+/**\par
+ * order tbody\par
+ * @param order\par
+ */\par
+\{template .order_tbody\}\par
+\par
+    \{let $numberOfBundles: length($order.bundles) /\}\par
+    \par
+    \{foreach $bundle in $order.bundles \}\par
+    \par
+        <tr data-host='\{$bundle.host\}'>\par
+        \par
+            \{if isFirst($bundle)\}\par
+            <td rowspan=\{$numberOfBundles\}> \{$order.id\} </td>\par
+            <td rowspan=\{$numberOfBundles\}> \{$order.placed\} </td>\par
+            <td rowspan=\{$numberOfBundles\} class=price> \{ $order.totalStr \} </td>\par
+            <td rowspan=\{$numberOfBundles\}> \{if $order.paid\} \{$order.paid\} \{/if\} </td>\par
+            \{/if\}\par
+        \par
+            <td> \{$bundle.host\} </td>\par
+            <td> \{length($bundle.items)\} (\{$bundle.itemCount\}) </td>\par
+            <td class='price'> $\{ $bundle.totalStr \} </td>\par
+            <td> \{if $bundle.ordered\} \{$bundle.ordered\} \{/if\} </td>\par
+            <td> \{if $bundle.received\} \{$bundle.received\} \{/if\} </td>\par
+\par
+            \{if isFirst($bundle)\}\par
+            <td rowspan=\{$numberOfBundles\}> \{if $order.shipped\} \{$order.shipped\} \{/if\} </td>\par
+            <td rowspan=\{$numberOfBundles\}> \{if $order.arrived\} \{$order.arrived\} \{/if\} </td>\par
+            <td rowspan=\{$numberOfBundles\}> \{if $order.delivered\} \{$order.delivered\} \{/if\} </td>\par
+            \{/if\}\par
+\par
+        </tr>\par
+\par
+    \{/foreach\}\par
+\par
+\{/template\}\par
+\par
+\par
+/**\par
+ * orders table\par
+ * @param orders The orders.\par
+ */\par
+\{template .orders_table\}\par
+\par
+<table id=orders>\par
+    \par
+    <thead>\par
+        <td id=id><span>#</span></td>\par
+        <td id=placed><span>Placed</span></td>\par
+        <td id=total class=price><span>Total KSh</span></td>\par
+        <td id=paid><span>Payment Received</span></td>\par
+        <td>Merchant</td>\par
+        <td>Items</td>\par
+        <td class='price'>USD</td>\par
+        <td>Ordered</td>\par
+        <td>Received</td>\par
+        <td id=shipped><span>Shipped from US</span></td>\par
+        <td id=arrived><span>Arrived KE</span></td>\par
+        <td id=delivered><span>Delivered</span></td>\par
+    </thead>\par
+    \par
+    \{foreach $order in $orders\}\par
+    \par
+    <tbody data-order=\{$order.id\} class=\{if index($order)%2\} odd \{else\} even \{/if\}>\par
+\par
+    \{call .order_tbody\}\par
+        \{param order: $order /\}\par
+    \{/call\}\par
+\par
+    </tbody>\par
+    \par
+    \{/foreach\}\par
+\par
+</table>\par
+    \par
+\{/template\}\par
+\par
+\par
+/**\par
+ * date button\par
+ * @param thing The order or bundle.\par
+ * @param field The name of the date field.\par
+ * @param? label The name of the date, defaults to field name\par
+ */\par
+\{template .date_button\}\par
+\par
+    \{if $thing[$field] \}\par
+        <span>\{$thing[$field]\}</span>\par
+    \{else\}\par
+        <button>Mark \{if $label\}\{$label\}\{else\}\{$field\}\{/if\}</button>\par
+    \{/if\}\par
+    \par
+\{/template\}\par
+\par
+/**\par
+ * order details\par
+ * @param order The order.\par
+ */\par
+\{template .order_details\}\par
+\par
+\{literal\}\par
+<style>\par
+\par
+    #order-details \{ width: 60%; margin: 0 auto \}\par
+    h1 \{ text-align: center \}\par
+    #receipt \{ margin-left: 24pt \}\par
+    h2 \{ font-weight: normal; margin-bottom: 6pt \}\par
+    th \{ text-align: left; font-weight: normal \}\par
+    td.price \{ text-align: right \}\par
+    td.quantity \{ text-align: center \}\par
+    textarea \{ width: 70% \}\par
+\par
+</style>\par
+\{/literal\}\par
+\par
+<div id=order-details>\par
+\par
+    <h1>Order #\{$order.id\}<button id=receipt>Print Receipt</button></h1>\par
+\par
+    <div>Placed: \{$order.placed\}</div>\par
+    \par
+    <div>Total: \{$order.total\} KSh</div>\par
+    \par
+    <div>Payment type: \{$order.payment_type\}</div>\par
+    \par
+    <div id='paid'><span>Payment Received: </span>\{if isNonnull($order.paid) \}\{ $order.paid \}\{/if\}</div>\par
+    \par
+    <h2>Customer Information</h2>\par
+    <div id=customer>\par
+        <div>Name: \{$order.name\}</div>\par
+        <div>Email: \{$order.email\}</div>\par
+        <div>Phone: \{$order.phone\}</div>\par
+        <div>Neighbourhood: \{$order.neighbourhood\}</div>\par
+    </div>\par
+\par
+    <h2>Items</h2>\par
+    <table>\par
+    \par
+        <thead>\par
+            <td></td>\par
+            <td class=price>Price</td>\par
+            <td class=quantity>Quantity</td>\par
+            <td>Ordered</td>\par
+            <td>Received</td>\par
+        </thead>\par
+\par
+        \{foreach $bundle in $order.bundles\}\par
+        \par
+        <tbody data-bundle='\{$bundle.host\}'>\par
+        \par
+            <tr>\par
+                <th>\{ $bundle.merchant.name \}</th>\par
+                <td></td>\par
+                <td></td>\par
+                <td id='\{$bundle.host\}-ordered' rowspan=\{length($bundle.items)+1\}></td>\par
+                <td id='\{$bundle.host\}-received' rowspan=\{length($bundle.items)+1\}></td>\par
+            </tr>\par
+            \par
+            \{foreach $item in $bundle.items\}\par
+            \par
+            <tr>\par
+                \par
+                <td>\{$item.name\}</td>\par
+                <td class=price>\{$item.price\}</td>\par
+                <td class=quantity>\{$item.quantity\}</td>\par
+            </tr>\par
+            \par
+            \{/foreach\}\par
+\par
+        </tbody>\par
+\par
+        \{/foreach\}\par
+\par
+    </table>\par
+\par
+    <div id='shipped'><span>Shipped from US: </span></div>\par
+    \par
+    <div id='arrived'><span>Arrived KE: </span></div>\par
+    \par
+    <div id='delivered'><span>Delivered to customer: </span></div>\par
+    \par
+    <h2>Notes</h2>\par
+    <textarea id=notes>\{if isNonnull($order.notes) \}\{$order.notes\}\{/if\}</textarea>\par
+\par
+</div>\par
+\par
+\{/template\}\par
+\par
+\par
+\par
+/**\par
+ * order receipt\par
+ * @param order The order.\par
+ */\par
+\{template .receipt\}\par
+\par
+<!DOCTYPE HTML>\par
+<html>\par
+\par
+<head>\par
+    <title>VituMob: kila kitu kila siku</title>\par
+    <meta charset='utf-8'>\par
+    \{literal\}\par
+    <style>\par
+    \par
+    body \{\par
+        background-image: url("http://www.vitumob.com/static/images/tag_background.png");\par
+        background-position: center;\par
+        background-repeat: no-repeat;\par
+        font-family: Helvetica, sans-serif\par
+    \}\par
+\par
+    #header \{ text-align: center; height: 161px \}\par
+    h1 \{ margin-top: 0; text-align: center; font-weight: normal; font-size: 24pt \}\par
+    \par
+    #customer \{ font-size: 14pt; text-align: center; margin-bottom: 18pt \}\par
+\par
+    table \{\par
+        min-width: 50%;\par
+        margin: 0 auto;\par
+        border: thin dotted black;\par
+        border-spacing: 0;\par
+        padding: 12pt\par
+    \}\par
+    \par
+    th \{ border-top: thin solid gray; padding-top: 12pt; text-align: left; font-weight: normal \}\par
+\par
+    td \{ padding: 3pt \}\par
+    td.price, tfoot td:first-child \{ text-align: right \}\par
+    td.quantity \{ text-align: center \}\par
+\par
+    tbody > tr:last-child > td \{ padding-bottom: 12pt \}\par
+\par
+    tfoot > tr:first-child > td \{ border-top: double medium gray; padding-top: 12pt \}\par
+    \par
+    p \{ width: 50%; margin: 28pt auto; font-size: smaller; text-align: center \}\par
+\par
+    </style>\par
+    \{/literal\}\par
+</head>\par
+\par
+<body>\par
+\par
+    <div id='header'><img id='logo' src='http://www.vitumob.com/static/images/logo.png'></div>\par
+\par
+    <h1>Order #\{$order.id\}</h1>\par
+    \par
+     <div id=customer>\par
+        <div>\{$order.name\}</div>\par
+        <div>\{$order.phone\}</div>\par
+        <div>\{$order.email\}</div>\par
+    </div>\par
+    \par
+    <table>\par
+    \par
+        <thead>\par
+            <td></td>\par
+            <td class=price>Price KSh</td>\par
+            <td class=quantity>Quantity</td>\par
+        </thead>\par
+\par
+        \{foreach $bundle in $order.bundles\}\par
+        \par
+        <tbody data-bundle='\{$bundle.host\}'>\par
+        \par
+            <tr><th>\{ $bundle.merchant.name \}</th><th></th><th></th></tr>\par
+            \par
+            \{foreach $item in $bundle.items\}\par
+            \par
+            <tr>\par
+                <td>\{ $item.name|noAutoescape \}</td>\par
+                <td class=price>\{ $item.priceStrKES \}</td>\par
+                <td class=quantity>\{ $item.quantity \}</td>\par
+            </tr>\par
+            \par
+            \{/foreach\}\par
+\par
+        </tbody>\par
+\par
+        \{/foreach\}\par
+        \par
+        <tfoot>\par
+            <tr><td>Subtotal</td><td class=price>\{ $order.subtotalStr \}</td><td></td></tr>\par
+            <tr><td>Customs</td><td class=price>\{ $order.customsStr \}</td><td></td></tr>\par
+            <tr><td>Shipping</td><td class=price>\{ $order.shippingStr \}</td><td></td></tr>\par
+            <tr><td>VAT</td><td class=price>\{ $order.vatStr \}</td><td></td></tr>\par
+            <tr><td>Total</td><td class=price>\{ $order.totalStr \}</td><td></td></tr>\par
+        </tfoot>\par
+\par
+    </table>\par
+    \par
+    <p>All sales are final upon delivery. If you have any questions about your order, please contact us at orders@vitumob.com or 0720-583095.</p>\par
+\par
+</body>\par
+\par
+</html>\par
+\par
+\{/template\}\par
+}
+ 

@@ -1,0 +1,12 @@
+#vitumob {
+	list-style-image: url("chrome://vitumob/skin/icon20.png");
+}
+
+#vitu-panel {
+	max-width: 256px;
+	font-family: Helvetica, sans-serif;
+	padding: 6pt;
+	font-size: 12pt
+}
+#vitu-panel description { padding-top: 6pt }
+#vitu-link { text-decoration: underline }

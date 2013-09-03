@@ -1,0 +1,90 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXFileReference section */
+		380C5F5716C5648700E5115E /* button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button.png; sourceTree = "<group>"; };
+		380C5F5816C5648700E5115E /* embed.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = embed.js; sourceTree = "<group>"; };
+		380C5F5916C5648700E5115E /* global.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = global.html; sourceTree = "<group>"; };
+		380C5F5A16C5648700E5115E /* home.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = home.js; sourceTree = "<group>"; };
+		380C5F5B16C5648700E5115E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		380C5F5C16C5648700E5115E /* logo.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = logo.jpg; sourceTree = "<group>"; };
+		380C5F5D16C5648700E5115E /* main.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = main.js; sourceTree = "<group>"; };
+		380C5F5E16C5648700E5115E /* popover.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = popover.html; sourceTree = "<group>"; };
+		380C5F5F16C5648700E5115E /* Settings.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Settings.plist; sourceTree = "<group>"; };
+		382C1A93170DF7FA00ABC29F /* safari_update.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = safari_update.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		380C5F5016C5645000E5115E = {
+			isa = PBXGroup;
+			children = (
+				382C1A93170DF7FA00ABC29F /* safari_update.plist */,
+				380C5F5716C5648700E5115E /* button.png */,
+				380C5F5816C5648700E5115E /* embed.js */,
+				380C5F5916C5648700E5115E /* global.html */,
+				380C5F5A16C5648700E5115E /* home.js */,
+				380C5F5B16C5648700E5115E /* Info.plist */,
+				380C5F5C16C5648700E5115E /* logo.jpg */,
+				380C5F5D16C5648700E5115E /* main.js */,
+				380C5F5E16C5648700E5115E /* popover.html */,
+				380C5F5F16C5648700E5115E /* Settings.plist */,
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXProject section */
+		380C5F5116C5645000E5115E /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0460;
+			};
+			buildConfigurationList = 380C5F5416C5645000E5115E /* Build configuration list for PBXProject "vitumob.safariextension" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 380C5F5016C5645000E5115E;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+			);
+		};
+/* End PBXProject section */
+
+/* Begin XCBuildConfiguration section */
+		380C5F5516C5645000E5115E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Debug;
+		};
+		380C5F5616C5645000E5115E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		380C5F5416C5645000E5115E /* Build configuration list for PBXProject "vitumob.safariextension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				380C5F5516C5645000E5115E /* Debug */,
+				380C5F5616C5645000E5115E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 380C5F5116C5645000E5115E /* Project object */;
+}

@@ -1,0 +1,17 @@
+
+.PrintArea {
+    margin: 20px 5px;
+    padding: 10px;
+}
+.button {
+    background: none repeat scroll 0 0 #999999;
+    border: 1px solid blue;
+    color: #EEEEEE;
+    cursor: pointer;
+    padding: 3px 5px;
+    text-align: center;
+    width: 80px;
+}
+span.test {
+    color: red;
+}
