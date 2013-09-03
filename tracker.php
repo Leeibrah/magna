@@ -742,7 +742,7 @@ recieving payments
 
 config/app
 db settings
-functions.php
+functions model
 bootstrap/paths
 public
 404
