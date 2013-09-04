@@ -2,5 +2,7 @@
 /vendor
 composer.phar
 composer.lock
-.DS_Store
-.elasticbeanstalk/
+.DS_Store
+
+.elasticbeanstalk/
+tracker.php
