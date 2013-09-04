@@ -12,7 +12,7 @@ class Functions extends Eloquent {
 		// echo "http://localhost/vml4/public";
 		// echo "http://www.vitumob.com";
 		// echo "http://vm.thedevs.org";
-		echo "https://vitumob.elasticbeanstalk.com/";
+		echo "https://vitumob.elasticbeanstalk.com";
 
 	}
 	public static function host()
