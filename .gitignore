@@ -6,6 +6,7 @@ composer.lock
 
 .elasticbeanstalk/
 ./ebextensions
+
 /app/models/Functions.php
 tracker.php
 
