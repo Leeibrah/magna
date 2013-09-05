@@ -19,8 +19,8 @@
 */
 
 //require __DIR__.'/../bootstrap/autoload.php';
-// require __DIR__.'/../../vitumob/bootstrap/autoload.php';
-require './vitumob/bootstrap/autoload.php';
+require __DIR__.'/../../vitumob/bootstrap/autoload.php';
+// require './vitumob/bootstrap/autoload.php';
 /*
 |--------------------------------------------------------------------------
 | Turn On The Lights
@@ -34,8 +34,8 @@ require './vitumob/bootstrap/autoload.php';
 */
 
 //$app = require_once __DIR__.'/../bootstrap/start.php';
-// $app = require_once __DIR__.'/../../vitumob/bootstrap/start.php';
-$app = require_once './vitumob/bootstrap/start.php';
+$app = require_once __DIR__.'/../../vitumob/bootstrap/start.php';
+// $app = require_once './vitumob/bootstrap/start.php';
 
 /*
 |--------------------------------------------------------------------------

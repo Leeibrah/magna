@@ -35,10 +35,10 @@ $env = $app->detectEnvironment(array(
 
 ));
 
-if ('stage' === $app['env'])
-{
-	 // $app->instance('path.public', str_replace('public', 'www', $app['path.public']));
-}
+// if ('stage' === $app['env'])
+// {
+// 	 // $app->instance('path.public', str_replace('public', 'www', $app['path.public']));
+// }
 
 /*
 |--------------------------------------------------------------------------

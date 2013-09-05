@@ -3,10 +3,10 @@
 composer.phar
 composer.lock
 .DS_Store
-#/public/.htaccess
+/public/.htaccess
 
 .elasticbeanstalk/
-#./ebextensions
+.ebextensions/
 .ebextensions/vitumob.config
 
 #/app/models/Functions.php
