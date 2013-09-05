@@ -26,7 +26,7 @@ return array(
 	|
 	*/
 
-	'url' => 'http://www.vitumob.com',
+	'url' => 'https://vitumob.elasticbeanstalk.com',
 
 	/*
 	|--------------------------------------------------------------------------

@@ -26,7 +26,7 @@ return array(
 	|
 	*/
 
-	'url' => 'http://www.vitumob.com',
+	'url' => 'http://localhost/vml4/public',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -112,9 +112,7 @@ return array(
 		'Illuminate\Translation\TranslationServiceProvider',
 		'Illuminate\Validation\ValidationServiceProvider',
 		'Illuminate\View\ViewServiceProvider',
-		'Illuminate\Workbench\WorkbenchServiceProvider',
-		'Way\Generators\GeneratorsServiceProvider',
-		'Aws\Laravel\AwsServiceProvider',
+		'Illuminate\Workbench\WorkbenchServiceProvider'
 
 	),
 
@@ -179,8 +177,7 @@ return array(
 		'Str'             => 'Illuminate\Support\Str',
 		'URL'             => 'Illuminate\Support\Facades\URL',
 		'Validator'       => 'Illuminate\Support\Facades\Validator',
-		'View'            => 'Illuminate\Support\Facades\View',
-		'AWS'			  => 'Aws\Laravel\AwsFacade',
+		'View'            => 'Illuminate\Support\Facades\View'
 		
 	),
 

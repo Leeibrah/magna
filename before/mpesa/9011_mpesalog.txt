@@ -1,7 +1,0 @@
-=============================
-id = 9011
-lid = admin
-pass = admin
-__utma = 111872281.1505136734.1372153134.1374656820.1374661473.6
-__utmz = 111872281.1372153134.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none)
-PHPSESSID = lj23d6ummusj5pdmicbklrks15

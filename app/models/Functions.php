@@ -10,8 +10,9 @@ class Functions extends Eloquent {
 		// echo $_SERVER['SERVER_NAME'];
 		// echo "http://localhost:8000";
 		// echo "http://localhost/vml4/public";
-		 echo "http://www.vitumob.com";
+		// echo "http://www.vitumob.com";
 		// echo "http://vm.thedevs.org";
+		echo Config::get('app.url');
 
 	}
 	public static function host()

@@ -44,7 +44,7 @@
 
 			    <br/>
 			    <br/>
-			    <h1 style='color: #f27a29'>Coming: September 2013</h1>
+			    <h1 style='color: #f27a29'>Coming: October 2013</h1>
 
 			    <p style='font-size: larger; color: #027fc2'>To be notified when we launch, enter your email address:</p>
 

@@ -65,10 +65,10 @@ return array(
 
 		'pgsql' => array(
 			'driver'   => 'pgsql',
-			'host'     => 'vitumob-instance.cskqeiwdvosu.us-west-2.rds.amazonaws.com',
-			'database' => 'vitumob',
-			'username' => 'vitumob',
-			'password' => 'vitu_mob#123',
+			'host'     => 'localhost',
+			'database' => 'database',
+			'username' => 'root',
+			'password' => '',
 			'charset'  => 'utf8',
 			'prefix'   => '',
 			'schema'   => 'public',

@@ -3,11 +3,11 @@
 composer.phar
 composer.lock
 .DS_Store
-/public/.htaccess
+#/public/.htaccess
 
 .elasticbeanstalk/
-./ebextensions
+#./ebextensions
 
-/app/models/Functions.php
+#/app/models/Functions.php
 tracker.php
 

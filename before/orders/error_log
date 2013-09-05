@@ -1,4 +1,0 @@
-[30-Aug-2013 09:26:14] PHP Warning:  mysql_connect() [<a href='function.mysql-connect'>function.mysql-connect</a>]: Can't connect to MySQL server on 'vitumob-instance.cskqeiwdvosu.us-west-2.rds.amazonaws.com' (4) in /home1/eco/public_html/vitumob.com/config.php on line 2
-[30-Aug-2013 09:26:14] PHP Warning:  mysql_select_db(): supplied argument is not a valid MySQL-Link resource in /home1/eco/public_html/vitumob.com/config.php on line 3
-[30-Aug-2013 21:40:27] PHP Warning:  mysql_connect() [<a href='function.mysql-connect'>function.mysql-connect</a>]: Can't connect to MySQL server on 'vitumob-instance.cskqeiwdvosu.us-west-2.rds.amazonaws.com' (4) in /home1/eco/public_html/vitumob.com/config.php on line 2
-[30-Aug-2013 21:40:27] PHP Warning:  mysql_select_db(): supplied argument is not a valid MySQL-Link resource in /home1/eco/public_html/vitumob.com/config.php on line 3

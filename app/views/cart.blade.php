@@ -284,7 +284,7 @@
 	<?php
 	} //ends if(is_array($items))
 	else{
-		echo '<h4>There are no items in your shopping cart</h4>'.session_id();
+		echo '<h4>There are no items in your shopping cart</h4><span style="display:none">'.session_id().'</span>';
 	}
 	?>
 
@@ -373,7 +373,7 @@
 
 
 		//writting view
-		t_usd.textContent = '$'+addCommas(sub_x);
+		t_usd.textContent = '$'+addCommas((Math.round(sub_x*100)/100).toFixed(2));
 		exchange_rate = $('table#cart').data('exchange-rate');
 		t_ksh.textContent = addCommas(Math.round(sub_x*exchange_rate)); 
 
