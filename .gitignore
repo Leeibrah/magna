@@ -7,6 +7,7 @@ composer.lock
 
 .elasticbeanstalk/
 #./ebextensions
+.ebextensions/vitumob.config
 
 #/app/models/Functions.php
 tracker.php
