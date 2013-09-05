@@ -54,7 +54,7 @@ return array(
 
 		'mysql' => array(
 			'driver'    => 'mysql',
-			'host'      => 'vitumob-instance.cskqeiwdvosu.us-west-2.rds.amazonaws.com',
+			'host'      => 'localhost',
 			'database'  => 'vitumob',
 			'username'  => 'vitumob',
 			'password'  => 'vitu_mob#123',
