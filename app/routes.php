@@ -13,14 +13,17 @@
 
 
 
-Route::get('', function()
+Route::get('/', function()
 {
 	return View::make('home');
 });
+Route::post('/', 'UserController@toNotify');
+
 Route::get('beta', function()
 {
 	return View::make('beta');
 });
+
 
 Route::post('cart', 'ItemsController@store');//accept items
 Route::post('cart/', 'ItemsController@store');//accept items

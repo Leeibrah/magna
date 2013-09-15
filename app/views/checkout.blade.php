@@ -34,7 +34,7 @@ if(isset($totals)):
     $total_ksh = number_format($exchange_rate*$usd);
     ?>
 
-    <h2>Total: KSh {{ $total_ksh }}</h2>
+    <h3>Total: KSh {{ $total_ksh }}</h3>
 
     <form id="checkout" method="POST" name="checkout" action="order"> <!-- PATCH does not deliver back errors -->
 
@@ -43,26 +43,15 @@ if(isset($totals)):
 
     @if(!Auth::user())
 
-    <h3>Contact Information:</h3>
-
-    <table>
+<br/>
+    <table style="margin: 0px;">
     <tr>
-    	<td><h4 style="line-height: 10px;">Log In:</h4></td>
-    	<td><h4 style="line-height: 10px;">Register:</h4></td>
+    	<td style="border-right: 1px solid #999;">
+            <h2 style="line-height: 10px;">New customer:</h2></td>
+    	<td><h2 style="line-height: 10px;">Returning customer:</h2></td>
     </tr>
     <tr style="border-bottom: 1px solid #999;">
-    	<td class="login" style="border-right: 1px solid #999;">
-    		<input type="hidden" name="csrf_token" id="csrf_token" value="{{ Session::getToken() }}" />
-    		<span>
-    		<label for="email">Email:</label>
-    		<input type="email" id="loginemail" name="login_email" placeholder="email address" value="{{ Input::old('login_email') }}">
-    		</span>
-    		<span>
-    		<label for="password">Password:</label>
-    		<input type="password" id="loginpassword" name="login_password" placeholder="password" value="">
-    		</span>
-    	</td>
-    	<td class="register">
+    	<td class="register" style="border-right: 1px solid #999;">
     		<span>
     		<label for="name">Name:</label>
     		<input type="text" id="name" name="name" title="FirstName Surname" placeholder="full name" pattern="[A-z]+ [A-z ]+" value="{{ Input::old('name') }}">
@@ -85,6 +74,17 @@ if(isset($totals)):
     		</span>
     	</td>
 
+        <td class="login">
+            <input type="hidden" name="csrf_token" id="csrf_token" value="{{ Session::getToken() }}" />
+            <span>
+            <label for="email">Email:</label>
+            <input type="email" id="loginemail" name="login_email" placeholder="email address" value="{{ Input::old('login_email') }}">
+            </span>
+            <span>
+            <label for="password">Password:</label>
+            <input type="password" id="loginpassword" name="login_password" placeholder="password" value="">
+            </span>
+        </td>
     </tr>
     </table>
 
@@ -94,7 +94,7 @@ if(isset($totals)):
 
     @endif
 
-    <h3>Delivery Information:</h3>
+    <h2>Delivery Information:</h2>
 
     <div style="text-align: center;">
 
@@ -110,7 +110,7 @@ if(isset($totals)):
 
     </div>
 
-    <h3>Payment Information:</h3>
+    <h2>Payment Information:</h2>
 
 
     <div style="text-align: center">
@@ -166,33 +166,17 @@ if(isset($totals)):
     </div>
 
     <div class="button-wrapper" style="clear: both;"><input type="submit" name="submitorder" class="blue" value="Submit Order"></div>
-
-
-    <input type="hidden" name="Lite_Merchant_ApplicationID" value="7ad6b430-0b38-4602-884d-f3e2f1310467">
-    <input type="hidden" id="iveri-lite-name-first" name="Ecom_BillTo_Postal_Name_First" value="First">
-    <input type="hidden" id="iveri-lite-name-last" name="Ecom_BillTo_Postal_Name_Last" value="Last">
-    <input type="hidden" id="iveri-lite-phone" name="Ecom_BillTo_Telecom_Phone_Number">
-    <input type="hidden" id="iveri-lite-email" name="Ecom_BillTo_Online_Email">
-    <input type="hidden" name="Lite_Order_Amount" value="664900">
-    <input type="hidden" name="Lite_Order_Terminal" value="Web">
-    <input type="hidden" name="Lite_ConsumerOrderID_PreFix" value="Vitu">
-    <input type="hidden" name="Lite_On_Error_Resume_Next" value="True">
-    <input type="hidden" name="Lite_Order_LineItems_Product_1" value="Subtotal">
-    <input type="hidden" name="Lite_Order_LineItems_Quantity_1" value="1">
-    <input type="hidden" name="Lite_Order_LineItems_Amount_1" value="664900">
-    <input type="hidden" name="Ecom_Payment_Card_Protocols" value="iVeri">
-    <input type="hidden" name="Lite_Version " value="2.0">
-    <input type="hidden" name="Ecom_ConsumerOrderID" value="AUTOGENERATE">
-    <input type="hidden" name="Ecom_TransactionComplete" value="False">
-    <input type="hidden" name="Lite_Website_Successful_url" value="https://www.vitumob.com/iverilite/success">
-    <input type="hidden" name="Lite_Website_Fail_url" value="https://www.vitumob.com/iverilite/failure">
-    <input type="hidden" name="Lite_Website_TryLater_url" value="https://www.vitumob.com/iverilite/trylater">
-    <input type="hidden" name="Lite_Website_Error_url" value="https://www.vitumob.com/iverilite/error">
+<?php
+if(isset(Auth::user()->email)):
+    $email = Auth::user()->email;
+endif;
+// elseif(isset(var))
+?>
 
     </form>
     <?php
 else:
-  echo '<h4>Your cart is empty. :( </h4>';
+  echo '<h4>Your cart is empty :( </h4>';
 endif;
 ?>
 
@@ -225,7 +209,7 @@ var ccExpMonth = document.getElementById('cc-month');
 var ccExpYear = document.getElementById('cc-year');
 
 if(document.getElementById('cc').checked){
-    // form.setAttribute('action', "https://backoffice.host.iveri.com/Lite/Transactions/New/Authorise.aspx");
+    //form.setAttribute('action', "https://backoffice.host.iveri.com/Lite/Transactions/New/Authorise.aspx");
     ccNum.removeAttribute('disabled');
     ccExpMonth.removeAttribute('disabled');
     ccExpYear.removeAttribute('disabled');
@@ -233,8 +217,7 @@ if(document.getElementById('cc').checked){
 }
 
 document.getElementById('m-pesa').addEventListener('click', function() {
-    
-   // form.setAttribute('action', "https://www.vitumob.com/checkout");
+    form.setAttribute('action', "{{ Functions::host() }}/order");
     ccInfo.style.visibility='hidden';
     ccNum.setAttribute('disabled');
     ccExpMonth.setAttribute('disabled');
@@ -243,7 +226,8 @@ document.getElementById('m-pesa').addEventListener('click', function() {
 }, false);
 
 document.getElementById('cc').addEventListener('click', function() {
-   // form.setAttribute('action', "https://backoffice.host.iveri.com/Lite/Transactions/New/Authorise.aspx");
+    form.setAttribute('action', "https://backoffice.host.iveri.com/Lite/Transactions/New/Authorise.aspx");
+    // form.setAttribute('action', "https://backoffice.iveri.co.za/Lite/Transactions/New/EasyAuthorise.aspx");
     ccNum.removeAttribute('disabled');
     ccExpMonth.removeAttribute('disabled');
     ccExpYear.removeAttribute('disabled');
@@ -262,10 +246,10 @@ form.addEventListener('submit', function() {
         document.getElementById('iveri-lite-phone').value = document.getElementById('phone').value;
         document.getElementById('iveri-lite-email').value = document.getElementById('email').value;
     }
-    // else{
-    //     document.getElementById('iveri-lite-phone').value = document.getElementById('phone').value;
-    //     document.getElementById('iveri-lite-email').value = document.getElementById('email').value;
-    // }
+    else{
+        // document.getElementById('iveri-lite-phone').value = document.getElementById('phone').value;
+        document.getElementById('iveri-lite-email').value = document.getElementById('loginemail').value;
+    }
 }, false);
 
 

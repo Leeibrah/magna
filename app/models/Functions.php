@@ -8,11 +8,11 @@ class Functions extends Eloquent {
 	public static function root()
 	{
 		// echo $_SERVER['SERVER_NAME'];
-		// echo "http://localhost:8000";
+		echo "http://localhost:8000";
 		// echo "http://localhost/vml4/public";
 		// echo "http://www.vitumob.com";
 		// echo "http://vm.thedevs.org";
-		echo Config::get('app.url');
+		// echo Config::get('app.url');
 
 	}
 	public static function host()
@@ -34,7 +34,7 @@ class Functions extends Eloquent {
 		/* function exchRate() returns the Kenya Shilling exchange rate plus an adjustment parameter. */
 		$to_add=3;	//$RATE_ADJUST // number to add to exchange rate
 		
-		return 87.65650;
+		// return 87.65650;
 		$from = 'USD';
 		$to = 'KES';
 		$url = 'http://finance.yahoo.com/d/quotes.csv?f=l1d1t1&s=USDKES=X';

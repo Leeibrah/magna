@@ -26,7 +26,8 @@ return array(
 	|
 	*/
 
-	'url' => 'http://www.vitumob.com',
+	'url' => 'http://'.$_SERVER['SERVER_NAME'],
+	// 'url' => 'http://localhost/',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -114,7 +115,6 @@ return array(
 		'Illuminate\View\ViewServiceProvider',
 		'Illuminate\Workbench\WorkbenchServiceProvider',
 		'Way\Generators\GeneratorsServiceProvider',
-		'Aws\Laravel\AwsServiceProvider',
 
 	),
 
@@ -180,7 +180,6 @@ return array(
 		'URL'             => 'Illuminate\Support\Facades\URL',
 		'Validator'       => 'Illuminate\Support\Facades\Validator',
 		'View'            => 'Illuminate\Support\Facades\View',
-		'AWS'			  => 'Aws\Laravel\AwsFacade',
 		
 	),
 

@@ -55,8 +55,8 @@ return array(
 		'mysql' => array(
 			'driver'    => 'mysql',
 			'host'      => 'localhost',
-			'database'  => 'vitumob',
-			'username'  => 'vitumob',
+			'database'  => 'eco_vitumob',
+			'username'  => 'eco_vitumob',
 			'password'  => 'vitu_mob#123',
 			'charset'   => 'utf8',
 			'collation' => 'utf8_unicode_ci',

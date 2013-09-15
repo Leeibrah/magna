@@ -125,6 +125,7 @@ class OrdersController extends AuthorizedController {
 			->with('message', 'There were validation errors.');
 	}
 
+
 	/**
 	 * Remove the specified resource from storage.
 	 *
@@ -138,19 +139,21 @@ class OrdersController extends AuthorizedController {
 		$this->order->find($id)->update(array('order_status' => 'deleted'));
 		return Redirect::to('beta/orders');
 	}
+
+
 	public function check(){
 		$input = Input::all();
 		// var_dump($input);
 
-		$email = isset($_REQUEST['email']) ? $_REQUEST['email'] : Auth::user()->email; 
-		$phone = isset($_REQUEST['phone']) ? $_REQUEST['phone'] : 'unset'; 
-		$id =  isset($_REQUEST['id']) ? $_REQUEST['id'] : 'unset';
+		$email = isset($input['email']) ? $input['email'] : Auth::user()->email; 
+		$phone = isset($input['phone']) ? $input['phone'] : 'unset'; 
+		$id =  isset($input['id']) ? $input['id'] : 'unset';
 
 		if($id != 'unset'):
 			$user =  DB::table('users')
 				->where('email', $email)
 				->orWhere('phone', $phone)
-				// ->orWhere('phone', $_REQUEST['phone'])
+				// ->orWhere('phone', $input['phone'])
 				->first();
 			// var_dump($id);
 
@@ -202,31 +205,8 @@ class OrdersController extends AuthorizedController {
 				$order['city'] = $input['city'];
 				$order['neighbourhood'] = $input['neighbourhood'];
 				$order['amount'] = $totals->total;
-				$order['order_status'] = 'shipping';
+				$order['order_status'] = 'To pay';
 			
-
-				$payment["payment_type"] = $input["payment_type"];
-				$payment["submitorder"] = $input["submitorder"];
-				$payment["Lite_Merchant_ApplicationID"] = $input["Lite_Merchant_ApplicationID"];
-				$payment["Ecom_BillTo_Postal_Name_First"] = $input["Ecom_BillTo_Postal_Name_First"];
-				$payment["Ecom_BillTo_Postal_Name_Last"] = $input["Ecom_BillTo_Postal_Name_Last"];
-				$payment["Ecom_BillTo_Telecom_Phone_Number"] = $input["Ecom_BillTo_Telecom_Phone_Number"];
-				$payment["Ecom_BillTo_Online_Email"] = $input["Ecom_BillTo_Online_Email"];
-				$payment["Lite_Order_Amount"] = $input["Lite_Order_Amount"];
-				$payment["Lite_Order_Terminal"] = $input["Lite_Order_Terminal"];
-				$payment["Lite_ConsumerOrderID_PreFix"] = $input["Lite_ConsumerOrderID_PreFix"];
-				$payment["Lite_On_Error_Resume_Next"] = $input["Lite_On_Error_Resume_Next"];
-				$payment["Lite_Order_LineItems_Product_1"] = $input["Lite_Order_LineItems_Product_1"];
-				$payment["Lite_Order_LineItems_Quantity_1"] = $input["Lite_Order_LineItems_Quantity_1"];
-				$payment["Lite_Order_LineItems_Amount_1"] = $input["Lite_Order_LineItems_Amount_1"];
-				$payment["Ecom_Payment_Card_Protocols"] = $input["Ecom_Payment_Card_Protocols"];
-				$payment["Lite_Version_"] = $input["Lite_Version_"];
-				$payment["Ecom_ConsumerOrderID"] = $input["Ecom_ConsumerOrderID"];
-				$payment["Ecom_TransactionComplete"] = $input["Ecom_TransactionComplete"];
-				$payment["Lite_Website_Successful_url"] = $input["Lite_Website_Successful_url"];
-				$payment["Lite_Website_Fail_url"] = $input["Lite_Website_Fail_url"];
-				$payment["Lite_Website_TryLater_url"] = $input["Lite_Website_TryLater_url"];
-				$payment["Lite_Website_Error_url"] = $input["Lite_Website_Error_url"];
 
 
 				// var_dump($payment);
@@ -237,14 +217,19 @@ class OrdersController extends AuthorizedController {
 					$order_id = DB::table('orders')->insertGetId($order);
 
 					//save items to order
-					DB::table('items')->where('session_id', session_id())->update(array(
-						'user_id' => Auth::user()->id, 
-						'order_id' => $order_id,
-						'status' => 'ordered',
+					DB::table('items')
+						->where('session_id', session_id())
+						->where('status', 'cart')
+						->update(array(
+							'user_id' => Auth::user()->id, 
+							'order_id' => $order_id,
+							'status' => 'ordered',
 					));
 
 					//update $totals->order_id
 					DB::table('order_totals')->where('order_id', session_id())->update(array('order_id' => $order_id));
+
+					return $order_id;
 
 				}
 				else{
@@ -261,6 +246,8 @@ class OrdersController extends AuthorizedController {
 			}
 			
 		}
+
+
 		function postLogin()
 		{
 			$email    = Input::get('login_email');
@@ -287,6 +274,8 @@ class OrdersController extends AuthorizedController {
 				
 
 		}
+
+
 		function postRegister()
 		{
 
@@ -301,7 +290,7 @@ class OrdersController extends AuthorizedController {
 				//
 				$user = new User;
 				$user->name  = $input['name'];
-				$user->email     = $input['email'];
+				$user->email  = $input['email'];
 				$user->phone  = $input['phone'];
 				$user->password  = Hash::make($input['password']);
 				$user->city = $input['city'];
@@ -322,29 +311,169 @@ class OrdersController extends AuthorizedController {
 			}
 		}
 			
-		//logic starts...
+		function ccMpesa(){
 
 		$input = Input::all();
 		$validator = "";
 
-		if(isset($input['login_email'])):
+		if(Auth::user()):
+			$validator = createOrder();
+		else:
+
+			if($input['login_email'] == null && $input['email'] == null):
+				return Redirect::back()->with('info', 'Please Log in or register to check out');
+			endif;
+
 			if($input['login_email'] != null):
 				$validator = postLogin();
 			elseif($input['email'] != null):
 				$validator = postRegister();
 			endif;
-		else:
-			$validator = createOrder();
+
 		endif;
 
-		if(isset($validator)):
+		if(isset($validator->message)):
 			return Redirect::back()->withInput($input)->withErrors($validator);
-		else:
-			return Redirect::to('beta/orders');
 		endif;
+
 		
+
+		// form submitted and order created successfully, $validator returned as the order id
+
+			if($input['payment_type'] == "m-pesa"){
+				// return Redirect::to('beta/orders');
+				return Redirect::to('beta/orders/'.$validator)
+				->with('success', 'Thank you for making that order. Check instructions at the bottom to pay with M-Pesa');
+			}
+
+		}
+		// else{
+
+		// iveri start
+		// if($input['payment_type'] == "cc"):
+			//return redirect to iveri checkout url
+			// return Redirect::URl('');
+			
+
+		// define variables
+
+		$order_id = $validator;
+		$name = Auth::user()->name;
+		$email = addslashes($input['email']);
+		$phone = $input['phone'];
+		$city = addslashes($input['city']);
+		$neighbourhood = addslashes($input['neighbourhood']);
+		$payment_type = $input['payment_type'];
+		$cc_num = isset($input["cc-num"]) ? $input["cc-num"] : 'unspecified';
+		$cc_month = $input['cc-month'];
+		$cc_year = $input['cc-year'];
+		$cc_ccv = isset($input["cc-ccv"]) ? $input["cc-ccv"] : 'unspecified';
+		$cc_provider = isset($input["Ecom_Payment_Card_Type"]) ? $input["Ecom_Payment_Card_Type"] : 'unspecified';
+
+		$expdate = $cc_month."/".$cc_year;
+
+		$namearr = explode(" ",$name);
+		$fname = $namearr[0];
+		$lname = $namearr[1];
+
+		$totals = DB::table('order_totals')->where('order_id', $order_id)->first();
+		$amount = $totals->total;
+
+		// create transaction db entry
+		$cc['order_id'] = $order_id;
+		$cc['provider'] = $cc_provider;
+		$cc['number'] = $cc_num;
+		$cc['ccv'] = $cc_ccv;
+		$cc['name'] = $name;
+		$cc['expiry_date'] = $expdate;
+		$cc['amount'] = $amount;
+		$cc['notes'] = 'new';
+
+		// Uncomment the below to run the seeder
+		// DB::table('order_totals')->insert($order_totals);
+
+		// record transaction
+		$cc_tid = DB::table('cc_transactions')->insertGetId($cc);
+
+		// do payment
+		// from form to array post
+		// fetch items arr
+
+		// $payment["payment_type"] = $input["payment_type"];
+		// $payment["payment_type"] = $input["payment_type"];
+		// $payment["payment_type"] = $input["payment_type"];
+		// $payment["payment_type"] = $input["payment_type"];
+		// $payment["submitorder"] = $input["submitorder"];
+
+		// $payment["Lite_Merchant_ApplicationID"] = $input["Lite_Merchant_ApplicationID"];
+		// $payment["Ecom_BillTo_Postal_Name_First"] = $input["Ecom_BillTo_Postal_Name_First"];
+		// $payment["Ecom_BillTo_Postal_Name_Last"] = $input["Ecom_BillTo_Postal_Name_Last"];
+		// $payment["Ecom_BillTo_Telecom_Phone_Number"] = $input["Ecom_BillTo_Telecom_Phone_Number"];
+		// $payment["Ecom_BillTo_Online_Email"] = $input["Ecom_BillTo_Online_Email"];
+		// $payment["Lite_Order_Amount"] = $input["Lite_Order_Amount"];
+		// $payment["Lite_Order_Terminal"] = $input["Lite_Order_Terminal"];
+		// $payment["Lite_ConsumerOrderID_PreFix"] = 'order';
+		// $payment["Lite_On_Error_Resume_Next"] = $input["Lite_On_Error_Resume_Next"];
+		// $payment["Lite_Order_LineItems_Product_1"] = $input["Lite_Order_LineItems_Product_1"];
+		// $payment["Lite_Order_LineItems_Quantity_1"] = $input["Lite_Order_LineItems_Quantity_1"];
+		// $payment["Lite_Order_LineItems_Amount_1"] = $input["Lite_Order_LineItems_Amount_1"];
+		// $payment["Ecom_Payment_Card_Protocols"] = $input["Ecom_Payment_Card_Protocols"];
+		// $payment["Lite_Version_"] = $input["Lite_Version_"];
+		// $payment["Ecom_ConsumerOrderID"] = $order_id;
+		// $payment["Ecom_TransactionComplete"] = $input["Ecom_TransactionComplete"];
+		// $payment["Lite_Website_Successful_url"] = $input["Lite_Website_Successful_url"];
+		// $payment["Lite_Website_Fail_url"] = $input["Lite_Website_Fail_url"];
+		// $payment["Lite_Website_TryLater_url"] = $input["Lite_Website_TryLater_url"];
+		// $payment["Lite_Website_Error_url"] = $input["Lite_Website_Error_url"];
+		var_dump($amount);
+		kill('here');
+			// this was commented
+		echo "<form name='creditformiveriform' action='https://backoffice.host.iveri.com/Lite/Transactions/New/Authorise.aspx' method='post'>
+				<input type='hidden' id='Lite_Order_Amount' name='Lite_Order_Amount' value='".$amount."'>";
+		// 		<input type='hidden' id='Lite_Order_Terminal' name='Lite_Order_Terminal' value='Web'>
+		// 		<input type='hidden' id='Lite_Order_AuthorisationCode' name='Lite_Order_AuthorisationCode' value=''>
+		// 		<input type='hidden' id='Lite_Order_BudgetPeriod' name='Lite_Order_BudgetPeriod' value='0'>
+		// 		<input type='hidden' id='Lite_Website_TextColor' name='Lite_Website_TextColor' value='#ffffff'>
+		// 		<input type='hidden' id='Lite_Website_BGColor' name='Lite_Website_BGColor' value='#86001B'>
+		// 		<input type='hidden' id='Lite_ConsumerOrderID_PreFix' name='Lite_ConsumerOrderID_PreFix' value='".$order_id."'>
+		// 		<input type='hidden' id='Lite_On_Error_Resume_Next' name='Lite_On_Error_Resume_Next' value='True'>
+		// 		<input type='hidden' id='Ecom_BillTo_Postal_Name_First' name='Ecom_BillTo_Postal_Name_First' value='".$fname."'>
+		// 		<input type='hidden' id='Ecom_BillTo_Postal_Name_Last' name='Ecom_BillTo_Postal_Name_Last' value='".$lname."'>
+		// 		<input type='hidden' id='Ecom_ShipTo_Online_Email' name='Ecom_ShipTo_Online_Email' value='".$email."'>
+		// 		<input type='hidden' id='Ecom_ShipTo_Telecom_Phone_Number' name='Ecom_ShipTo_Telecom_Phone_Number' value='".$phone."'>
+		// 		<input type='hidden' id='Ecom_ShipTo_Postal_City' name='Ecom_ShipTo_Postal_City' value='".$city."'>
+		// 		<input type='hidden' id='Ecom_Payment_Card_Type' name='Ecom_Payment_Card_Type' value='".$cc_type."'>
+		// 		<input type='hidden' id='Ecom_Payment_Card_Number' name='PEcom_ayment_Card_Number' value='".$cc_num."'>
+		// 		<input type='hidden' id='Ecom_Payment_Card_ExpDate_Month' name='Ecom_Payment_Card_ExpDate_Month' value='".$cc_month."'>
+		// 		<input type='hidden' id='Ecom_Payment_Card_ExpDate_Year' name='Ecom_Payment_Card_ExpDate_Year' value='".$cc_year."'>";
+				
+				$items =  DB::table('items')
+				->where('order_id', $order_id)
+				->where('quantity', '>', 0)->get();
+				$i=1;
+				// foreach ($items as $item) {
+				// {
+				// 	echo "<input type='hidden' id='Lite_Order_LineItems_Product_".$i."' name='Lite_Order_LineItems_Product_".$i."' value='".$rowProduct['name']."'>
+				// 	<input type='hidden' id='Lite_Order_LineItems_Quantity_".$i."' name='Lite_Order_LineItems_Quantity_".$i."' value='".$rowProduct['quantity']."'>
+				// 	<input type='hidden' id='Lite_Order_LineItems_Amount_".$i."' name='Lite_Order_LineItems_Amount_".$i."' value='".$rowProduct['item_price_usd']."'>";
+				// 	$i++;
+				// };
+				
+				
+				
+				echo "<input type='hidden' ID='Lite_Website_Successful_url' NAME='Lite_Website_Successful_url' VALUE='http://localhost/vitumob/VituMob_code_and_other_files/order_status.php?orderid=".$order_id."'>
+					<input type='hidden' ID='Lite_Website_Fail_url' NAME='Lite_Website_Fail_url' VALUE='http://www.vitumob.com/fail.php'>
+					<input type='hidden' ID='Lite_Website_TryLater_url' NAME='Lite_Website_TryLater_url' VALUE='http://www.vitumob.com/trylater.php'>
+					<input type='hidden' ID='Lite_Website_Error_url' NAME='Lite_Website_Error_url' VALUE='http://www.vitumob.com/error.php'>
+					</form>
+					<script>document.creditformiveriform.submit()</script>";
+
+				// payment details -> db
+
+				//end of iveri   -- This was commented
+
+						// endif;
 	
-	}
-
-
+			}
+		// }
 }

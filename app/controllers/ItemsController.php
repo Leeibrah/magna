@@ -50,7 +50,7 @@ class ItemsController extends BaseController {
 		$decoded_bundle = urldecode($str_encoded);
 		$bundle= json_decode($decoded_bundle, TRUE);
 
-		// print_r($bundle['host']);
+		print_r($bundle['host']);
 
 		if(!is_array($bundle['items'])){
 			$bundle['items'] = json_decode($bundle['items'], TRUE);

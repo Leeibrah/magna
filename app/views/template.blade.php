@@ -53,6 +53,8 @@
 	<!-- ./ login button -->
 	</fieldset>
 </form>
+
+
 <?php
 function getFloat($pString) {
     if (strlen($pString) == 0) {
@@ -93,6 +95,7 @@ function getFloat($pString) {
     return $result;
 }
 ?>
+
 <?php 
 
 function parseFloat($ptString) { 
@@ -225,6 +228,6 @@ testFloatParsing();
 
 
 @section('js')      <!-- goes under body -->
-    <!-- <script src="{{ asset('js/template.js') }}"></script> -->
+    <!-- // <script src="{{ asset('js/template.js') }}"></script> -->
 @stop
 

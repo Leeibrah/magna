@@ -29,7 +29,7 @@ $elastic_hostname = isset($_SERVER['RDS_HOSTNAME']) ? $_SERVER['SERVER_NAME'] : 
 
 $env = $app->detectEnvironment(array(
 
-	'local' => array('*local*', '*.dev', 'TECHYTIMO-PC'),
+	'local' => array('*localhost*', '*.dev', 'TECHYTIMO-PC'),
 	'stage' => array('*.com'),
 	'elastic' => array($elastic_hostname)
 

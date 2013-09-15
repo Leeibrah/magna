@@ -3,7 +3,7 @@
 {{-- Web site Title --}}
 @section('title')
 @parent
-:: Your Cart
+:: Order {{ $id }}
 @stop
 
 
@@ -263,7 +263,7 @@
 			</tr>
 			<tr>
 				<td>&nbsp;</td>
-				<td class="lbl">TotalLorem ipsum Veniam tempor ullamco sunt.</td>
+				<td class="lbl">Total</td>
 				<td class="price" id="total-usd">${{ $total_all }}</td>
 				<td class="price price-ksh" id="total-ksh">{{ $total_all_ksh }}</td>
 				<td>&nbsp;</td>
@@ -281,6 +281,22 @@ if((Auth::user()->id == $order->user_id) || User::adminCheck()){
 <p>{{ ($order->notes == null) ? 'none' : $order->notes; }}</p>
 
 <td><a href="{{ Functions::host() }}/orders/{{ $order->id }}/edit" class="btn btn-info">Edit</a></td>
+
+<br/>
+<br/>
+<div style="margin:0px auto">
+	<h2 style='margin-bottom: 0'>To pay with M-Pesa:</h2>
+	<ol style='margin-top: 0'>
+	    <li>Go to M-Pesa on your phone
+	    <li>Choose "Pay Bill" from the M-PESA menu
+	    <li>Enter the VituMob Business Number: <strong>997200</strong>
+	    <li>Enter the OrderID the account number: <strong>{{ $id }}</strong>
+	   	<li>Enter the Price as the amount: <strong>{{ $total_all_ksh }}</strong>
+	    <li>Enter your secret <strong>PIN</strong> and press <strong>OK</strong>
+	</ol>
+</div>
+<br/>
+<td><a href="{{ Functions::host() }}/orders" class="btn btn-info">&#60;&#60;All My Orders</a></td>
 <?php
 }
 ?>

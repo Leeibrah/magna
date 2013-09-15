@@ -46,31 +46,6 @@ class UsersController extends BaseController {
 		$input = Input::all();
 		$input['notes'] = "new user";
 
-		if($_REQUEST['email']):
-			$input['notes'] = "to be notified on launch";
-
-				//saving to file
-				$myFile = "launch_emails.txt";
-				$fh = fopen($myFile,'a') or die("can't open file");
-				$stringData = $_REQUEST['email']."\n";
-				fwrite($fh, $stringData);
-				fclose($fh);
-
-			$validation = Validator::make($input, User::$rules);
-
-			if ($validation->passes())
-			{
-				$this->user->create($input);
-
-				$inf = '<p style="font-size: larger;"">
-				Thank you. You will be notified at  
-				<span style="color: #027fc2">'.$input['email'].'</span> 
-				when we launch.</p>';
-				return View::make('info-prelaunch')
-					->with('inf', $inf);
-			}
-		endif;
-
 		$validation = Validator::make($input, User::$rules);
 
 		if ($validation->passes())

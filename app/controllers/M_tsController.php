@@ -43,7 +43,7 @@ class M_tsController extends BaseController {
 	 */
 	public function store()
 	{
-		$input = Input::all();
+		$in = Input::all();
 
 			// ipn structure:			
 			// https://www.vitumob.com/mpesa?
@@ -64,11 +64,32 @@ class M_tsController extends BaseController {
 			// mpesa_trx_time=10:49 PM&
 			// mpesa_amt=8723.0&
 			// mpesa_sender=RONALD NDALO
+
+		// $table->increments('id');
+		// $table->integer('order_id');
+		// $table->string('ipn_id');
+		// $table->string('orig');
+		// $table->string('dest');
+		// $table->string('tstamp');
+		// $table->string('text');
+		// $table->string('customer_id');
+		// $table->string('user');
+		// $table->string('pass');
+		// $table->string('routemethod_id');
+		// $table->string('routemethod_name');
+		// $table->string('mpesa_code');
+		// $table->string('mpesa_acc');
+		// $table->string('mpesa_msisdn');
+		// $table->string('mpesa_trx_date');
+		// $table->string('mpesa_trx_time');
+		// $table->string('mpesa_amt');
+		// $table->string('mpesa_sender');
+		// $table->text('notes');
 		
-		$input->ipn_id  = $input['id'];
-		$input->id  = '';
-		$input->order_id     = $input['email'];
-		$input->notes  = json_encode($input);
+		// $input['id']    = '';
+		// $input['order_id']    = $input['id'];
+		// $input['ipn_id']  = $input['mpesa_code'];
+		$input['notes']  = json_encode($in);
 
 		$validation = Validator::make($input, M_t::$rules);
 		if ($validation->passes())

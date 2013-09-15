@@ -244,4 +244,29 @@ class UserController extends AuthorizedController
 		//
 		return Redirect::to('login')->with('success', 'Logged out with success!');
 	}
+	public function toNotify(){
+		$input = Input::all();
+var_dump($input);
+		// if($_REQUEST['email']):
+			$input['notes'] = "to be notified on launch";
+
+			//saving to file
+			$myFile = "launch_emails.txt";
+			$fh = fopen($myFile,'a') or die("can't open file");
+			$stringData = $_REQUEST['email']."\n";
+			fwrite($fh, $stringData);
+			fclose($fh);
+
+			User::create($input);
+
+			$inf = '<p style="font-size: larger;"">
+			Thank you. You will be notified at  
+			<span style="color: #027fc2">'.$input['email'].'</span> 
+			when we launch.</p>';
+			// return View::make('info-prelaunch')
+			// 	->with('inf', $inf);
+				var_dump($inf);
+		// endif;
+			// return back()->with('info', 'Please type your email');;
+	}
 }

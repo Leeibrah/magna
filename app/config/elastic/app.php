@@ -26,7 +26,7 @@ return array(
 	|
 	*/
 
-	'url' => 'https://vitumob.elasticbeanstalk.com',
+	'url' => 'http://'.$_SERVER['SERVER_NAME'],
 
 	/*
 	|--------------------------------------------------------------------------

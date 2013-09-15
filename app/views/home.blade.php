@@ -40,24 +40,30 @@
 				</div>
 			@endif
 
-			<div id='main' style="text-align:center;">
+			<div id="main" style="text-align:center;">
 
 			    <br/>
 			    <br/>
-			    <h1 style='color: #f27a29'>Coming: October 2013</h1>
+			    <h1 style="color: #f27a29">Coming: September 2013</h1>
 
-			    <p style='font-size: larger; color: #027fc2'>To be notified when we launch, enter your email address:</p>
+			    <p style="font-size: larger; color: #027fc2">To be notified when we launch, enter your email address:</p>
 
-			    <!-- <form action='{{ Functions::host()}}/tonotify' method='get'> -->
-			    <form action='{{ Functions::root() }}/users' method='post'>
-			        <input name='email' type='email' required placeholder='your email address' style='margin-left: 24pt; width: 192pt'>
-			        <input type='submit' class="small blue" value='Request Notification'>
+			    <form action="" method="post">
+			    <!-- <form action="{{ Functions::root() }}/users" method="post"> -->
+			        <input name="email" type="email" required placeholder="your email address" 
+			        style="margin-left: 24pt; width: 192pt">
+			        <input type="submit" class="small blue" value="Request Notification">
 			    </form>
 
 			</div>
 
-			<div id='footer'>
+			<div id="footer">
 			    <span>&copy;2013 VituMob</span>
+			    <?php
+			    // echo $_SERVER["HTTP_HOST"].$_SERVER["REQUEST_URI"];
+				// phpinfo();
+				?>
+
 			</div>
 
 

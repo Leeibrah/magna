@@ -16,8 +16,8 @@
 
 <div id='main' class=''>
 
-	<h1 class='cart'>Cart</h1>
-
+	<h1 class='cart' >Cart</h1>
+	<!-- <h1 class='cart' style="font-weight: bold;">Cart</h1> -->
 
 		<?php
 		//important that figures on on this page are not cached, otherwise onunload we lose dynamically stored stuff
@@ -31,11 +31,11 @@
 		$customs_q_all = 0;
 		$shipping_q_all = 0;
 		$vat_q_all = 0;
-		$total_all = 0;
+		$totals = 0;
 		$i=0;
 
 		$items =  DB::table('items')->where('session_id', session_id())->where('status', 'cart')->get();
-		// $items =  DB::table('items')->where('ip_address', $_SERVER['REMOTE_ADDR'])->where('quantity', '>', 0)->get();
+		 $items =  DB::table('items')->where('ip_address', $_SERVER['REMOTE_ADDR'])->where('quantity', '>', 0)->get();
 
 		// var_dump($items); 
 		if(isset($items['0'])){ 
@@ -46,11 +46,11 @@
 			<tbody>
 
 				<tr>
-					<td width='15%'>Items</td>
+					<td width='15%' style="font-weight: bold;">Items</td>
 					<td width='55%'>&nbsp;</td>
-					<td width='10%' class='price price-usd'>USD</td>
-					<td width='10%' class='price price-ksh'>x{{ number_format((float)$exchange_rate, 2, '.', ',') }} KSh</td>
-					<td width='10%'>Quantity</td>
+					<td width='10%' class='price price-usd' style="font-weight: bold;">USD</td>
+					<td width='10%' class='price price-ksh' style="font-weight: bold;">KSh</td>
+					<td width='10%' style="font-weight: bold;">Quantity</td>
 				</tr>
 
 				<?php
@@ -149,7 +149,7 @@
 				$customs_q_all += 	$customs_q;
 				$shipping_q_all +=	$shipping_q;
 				$vat_q_all += 		$vat_q;
-				$total_all += 		$total_x;
+				$totals += 		$total_x;
 
 
 				$itemspecs = array(
@@ -192,7 +192,7 @@
 				</tr>
 				<tr>
 					<td class='itemspecs'>{{ implode(", ", $itemspecs) }}</td>
-				</tr>
+				</tr>				
 
 				<?php
 			};//ends if ( $item->merchant_id == $unique_merchant_id )
@@ -202,18 +202,27 @@
 		$customs_q_all_ksh = number_format($customs_q_all*$exchange_rate);
 		$shipping_q_all_ksh = number_format($shipping_q_all*$exchange_rate);
 		$vat_q_all_ksh = number_format($vat_q_all*$exchange_rate); 
-		$total_all_ksh = number_format($total_all*$exchange_rate);
+		$total_all_ksh = number_format($totals*$exchange_rate);
 
 		$price_q_all = number_format((float)$price_q_all, 2, '.', ',');
 		$customs_q_all = number_format((float)$customs_q_all, 2, '.', ',');
 		$shipping_q_all = number_format((float)$shipping_q_all, 2, '.', ',');
 		$vat_q_all = number_format((float)$vat_q_all, 2, '.', ',');
-		$total_all = number_format((float)$total_all, 2, '.', ',');
+		$total_all = number_format((float)$totals, 2, '.', ',');
+		$totals = round($totals, 4); 
 
 		?>
-			<!-- <tr>
-				<td colspan="5"><input type="submit" name="updateqty" value="Update Cart" class="blue button"></td>
-			</tr>  -->
+
+<!-- 			<tr class='donate' >
+				<td class='image' rowspan="2"><img src=''></td>
+				<td class='name'>
+					<span style="display:inline; color:#E54D90">Donate</span> to keep VituMob healthy and speedy :)
+				</td>
+				<td class='price price-usd'><input type="text" class="donate" style="width:50px" value="0"/></td>
+				<td class='price price-ksh' >0</td>
+				<td class='quantity'>&nbsp;</td>
+			</tr>
+ -->
 		</tbody>
 
 
@@ -259,9 +268,10 @@
 
 	</table>
 
+	<!-- <form name="form1" id="cart-form" action="{{ Functions::host().'/checkout' }}" method="post" style="text-align: center;"> -->
 	<form name="form1" id="cart-form" action="{{ Functions::host().'/checkout' }}" method="post" style="text-align: center;">
 
-		<input type="hidden" name="mode" value=""/>
+		<input type="hidden" name="mode" value=""/>	
 		<input type="hidden" name="sub_total_usd" class="price" id="sub-total-usd" value="{{ $price_q_all }}"/>
 		<input type="hidden" name="sub_total_ksh" class="price price-ksh" id="sub-total-ksh" value="{{ $price_q_all_ksh }}"/>
 
@@ -275,7 +285,7 @@
 		<input type="hidden" name="vat_usd" class="price" id="vat-usd" value="{{ $vat_q_all }}"/>
 		<input type="hidden" name="vat_ksh" class="price price-ksh" id="vat-ksh" value="{{ $vat_q_all_ksh }}"/>
 
-		<input type="hidden" name="total_usd" class="price" id="total-usd" value="{{ $total_all }}"/>
+		<input type="hidden" name="total_usd" class="price" id="total-usd" value="{{ $totals }}"/>
 		<input type="hidden" name="total_ksh" class="price price-ksh" id="total-ksh" value="{{ $total_all_ksh }}"/> 
 
 		<input type="submit" name="submit" value="Checkout" class="blue button" />
@@ -284,7 +294,8 @@
 	<?php
 	} //ends if(is_array($items))
 	else{
-		echo '<h4>There are no items in your shopping cart</h4><span style="display:none">'.session_id().'</span>';
+		echo '<h4>There are no items in your shopping cart</h4>';
+		echo '<span style="display:none">Session'.session_id().'</span>';
 	}
 	?>
 
@@ -329,7 +340,13 @@
 			}
 			return x1 + x2;
 		}
-		$('select#quantity').on('change', function(){
+
+	exchange_rate = $('table#cart').data('exchange-rate');
+// $(document).ready(function () {
+
+	$('select#quantity').on('change', function(){
+
+
 
 		// reading view for this product...
 
@@ -374,7 +391,6 @@
 
 		//writting view
 		t_usd.textContent = '$'+addCommas((Math.round(sub_x*100)/100).toFixed(2));
-		exchange_rate = $('table#cart').data('exchange-rate');
 		t_ksh.textContent = addCommas(Math.round(sub_x*exchange_rate)); 
 
 		//writting hidden td
@@ -383,7 +399,6 @@
 		t_shi.textContent = shi_x;
 		t_vat.textContent = vat_x;
 		t_tot.textContent = tot_x;
-
 
 		//calculating for bottom figures
 
@@ -406,6 +421,9 @@
 		// console.log(vat);
 		// console.log(tot);
 
+		//adding donation
+		// tot += $.inArray($("input.donate").val(), ['', '.']) ? 0 : parseFloat($("input.donate").val()); 
+
 		//writing view for totals...
 
 		$('td#sub-total-usd')['0'].textContent = '$'+addCommas((Math.round(sub*100)/100).toFixed(2)); 
@@ -422,18 +440,17 @@
 
 		//write inputs for checkout form
 
-		$('input#sub-total-usd')['0'].value = '$'+addCommas((Math.round(sub*100)/100).toFixed(2)); 
-		$('input#customs-usd')['0'].value = '$'+addCommas((Math.round(cus*100)/100).toFixed(2)); 
-		$('input#shipping-usd')['0'].value = '$'+addCommas((Math.round(shi*100)/100).toFixed(2)); 
-		$('input#vat-usd')['0'].value = '$'+addCommas((Math.round(vat*100)/100).toFixed(2)); 
-		$('input#total-usd')['0'].value = '$'+addCommas((Math.round(tot*100)/100).toFixed(2)); 
+		$('input#sub-total-usd')['0'].value = (Math.round(sub*100)/100).toFixed(4); 
+		$('input#customs-usd')['0'].value = (Math.round(cus*100)/100).toFixed(4); 
+		$('input#shipping-usd')['0'].value = (Math.round(shi*100)/100).toFixed(4); 
+		$('input#vat-usd')['0'].value = (Math.round(vat*100)/100).toFixed(4); 
+		$('input#total-usd')['0'].value = (Math.round(tot*100)/100).toFixed(4); 
 
-		$('input#sub-total-ksh')['0'].value = addCommas(Math.round(sub*exchange_rate)); 
-		$('input#customs-ksh')['0'].value = addCommas(Math.round(cus*exchange_rate)); 
-		$('input#shipping-ksh')['0'].value = addCommas(Math.round(shi*exchange_rate)); 
-		$('input#vat-ksh')['0'].value = addCommas(Math.round(vat*exchange_rate)); 
-		$('input#total-ksh')['0'].value = addCommas(Math.round(tot*exchange_rate)); 
-
+		$('input#sub-total-ksh')['0'].value = Math.round(sub*exchange_rate); 
+		$('input#customs-ksh')['0'].value = Math.round(cus*exchange_rate); 
+		$('input#shipping-ksh')['0'].value = Math.round(shi*exchange_rate); 
+		$('input#vat-ksh')['0'].value = Math.round(vat*exchange_rate); 
+		$('input#total-ksh')['0'].value = Math.round(tot*exchange_rate); 
 		
 		//send to db...
 		
@@ -524,6 +541,60 @@
 		});
 	});
 
+// });
 
+ // $("input.donate").keydown(function(event) {
+
+ //        	// Allow: backspace, delete, tab, escape, and enter
+ //        if ( event.keyCode == 46 || event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 27 || event.keyCode == 13 || 
+	//         // Allow: Ctrl+A
+	//        (event.keyCode == 65 && event.ctrlKey === true) || 
+	//         // Allow: home, end, left, right
+	//        (event.keyCode >= 35 && event.keyCode <= 39) || 
+	//         // Allow: . dot
+	//        (event.keyCode == 110 || event.keyCode == 190)) {
+	//             // let it happen, don't do anything
+	//             // return;
+	//             addDonation();
+ //        }
+ //        else {
+ //            // Ensure that it is a number and stop the keypress
+ //            if (event.shiftKey || (event.keyCode < 48 || event.keyCode > 57) && (event.keyCode < 96 || event.keyCode > 105 )) {
+ //                event.preventDefault(); 
+ //            }   
+ //        }
+
+ //    });
+ //    function addDonation(){
+	// 	$("input.donate").keyup(function(event) {
+
+	// 		tot = 0;
+	// 		$('tr.item').each(function(){
+	// 			tot += parseFloat($(this).children('td.new-total')['0'].textContent);
+	// 		});
+
+	// 		//make it decimalizable
+	// 		if(/^[\d]+||[\.]+$/.test(event.target.value) && event.target.value != '.'){
+	// 	        //read textbox content
+	// 			donation = event.target.value != '' ? parseFloat(event.target.value) : 0;
+	// 			//add donation
+	// 			newtot = tot + donation;
+	// 			ksh = 0;
+	// 			ksh = donation*exchange_rate;
+
+	// 			//write in ksh right next
+	// 			$("tr.donate td.price-ksh")['0'].textContent = addCommas(Math.round(ksh)); 
+
+	// 			//writing view for totals...
+	// 			$('td#total-usd')['0'].textContent = '$'+addCommas((Math.round(newtot*100)/100).toFixed(2)); 
+	// 			$('td#total-ksh')['0'].textContent = addCommas(Math.round(newtot*exchange_rate)); 
+
+	// 			//write inputs for checkout form
+
+	// 			$('input#total-usd')['0'].value = (Math.round(newtot*100)/100).toFixed(4); 
+	// 			$('input#total-ksh')['0'].value = Math.round(newtot*exchange_rate); 
+	// 		};
+	//     });
+	// }
 </script>
 @stop
