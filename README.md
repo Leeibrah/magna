@@ -1,7 +1,4 @@
-vml4
-====
+   Magna
+===========
 
-Precursor to the predecessor
-
-
-You just dont pull this. It deletes your OS!
+Magna
